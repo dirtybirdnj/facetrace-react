@@ -30,6 +30,8 @@ class App extends Component {
     this.addLayer = this.addLayer.bind(this);
     this.clearLayers = this.clearLayers.bind(this);
     this.handleNewImage = this.handleNewImage.bind(this);
+    this.updateSetting = this.updateSetting.bind(this);
+    this.resetSettings = this.resetSettings.bind(this);
 
   }
 
@@ -52,22 +54,44 @@ class App extends Component {
 
   }
 
+  updateSetting(name, value){
+
+    console.log('app.js',name, value);
+    this.setState({  ...this.state,
+      settings: { ...this.state.settings, [name] : value }})
+
+      // let canvas = document.getElementById('canvas');
+      // Caman('#canvas', () => {
+
+      //   this.replaceCanvas(canvas);
+      //   this.brightness(this.state.brightness)
+      //   .contrast(this.state.contrast)
+      //   .render();
+
+
+      // })
+
+  }
+
+  resetSettings(){
+
+    this.setState({
+           
+      settings: {
+        brightness: 0,
+        contrast: 0,
+      }
+    })
+
+    console.log(this.state);
+
+  }
+
 
   handleNewImage(event){
 
     const file = event.target.files[0];
     const imgSrc = window.URL.createObjectURL(file);
-
-    //console.log(imgSrc, imgSrc.width, imgSrc.height);
-
-    //const ctx = document.getElementById('imageManipulationOutput').getContext('2d');
-    //let canvas = document.getElementById('imageManipulationOutput');
-    //console.log(canvas);
-
-    console.log(event);
-
-    //ctx.drawImage(imgSrc, 0, 0);
-
     this.setState({ image: imgSrc });
 
   }
@@ -82,7 +106,7 @@ class App extends Component {
 
           <Grid justify="center" container spacing={16} style={{padding: 24}}>
             <Grid item xs={12} md={2} padding={10}>
-                  <Settings addLayer={this.addLayer}/>
+                  <Settings values={this.state.settings} image={this.state.image} addLayer={this.addLayer} updateSetting={this.updateSetting} resetSettings={this.resetSettings}/>
             </Grid>
             <Grid item xs={12} md={8}>
                   <Workspace image={this.state.image} handleNewImage={this.handleNewImage}/>

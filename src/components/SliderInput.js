@@ -10,28 +10,37 @@ constructor(props){
 
     super(props);
     this.state = {
-        value: 0
+        value: this.props.value
     }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.updateAppState = this.updateAppState.bind(this);
 
 }
 
     
     handleChange = (event, value) => {
+        
         this.setState({ value });
     };
+
+    updateAppState = () => {
+
+        this.props.updateSetting(this.props.name, this.state.value);
+
+    }
              
 
 render(){
 
-    const { value } = this.state;
-    const { label, min, max, step } = this.props;
+    //const { value } = this.state;
+    const { value, label, min, max, step, disabled } = this.props;
 
     return (
         <Fragment>
             
-            
                 <ListItem>
-                <ListItemText primary={<Typography id="labelBrightness">{label}: {value}</Typography>} />
+                <ListItemText primary={<Typography id={`label{$label}`} >{label}: {value}</Typography>} />
                 </ListItem>
 
                 <ListItem>
@@ -41,9 +50,11 @@ render(){
                         min={min}
                         max={max}
                         step={step}
-                        aria-labelledby="labelBrightness"
+                        aria-labelledby={`label{$label}`}
                         onChange={this.handleChange}
-                
+                        onDragEnd={this.updateAppState}
+                        disabled={disabled}
+                    
                     />
                     
                         
