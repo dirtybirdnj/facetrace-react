@@ -1,26 +1,98 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { Component, Fragment } from 'react';
+
+import 'typeface-roboto';
 import './App.css';
 
+import Grid from '@material-ui/core/Grid';
+
+import NavBar from './components/NavBar'
+
+import Settings from './components/Settings';
+import Layers from './components/Layers';
+import Workspace from './components/Workspace';
+
 class App extends Component {
+
+  constructor(props){
+
+    super(props);
+    this.state = {
+
+      settings: {
+        brightness: 0,
+        contrast: 0,
+      },
+      image: null,
+      layers: []
+
+    }
+
+    this.addLayer = this.addLayer.bind(this);
+    this.clearLayers = this.clearLayers.bind(this);
+    this.handleNewImage = this.handleNewImage.bind(this);
+
+  }
+
+  addLayer(){
+
+      const { layers, settings } = this.state;
+ 
+      const newLayer = {
+        label:  'Layer ' + (layers.length + 1),
+        settings: settings
+      }
+
+      this.setState({ layers: [ ...layers, newLayer ]});
+
+  }
+
+  clearLayers(){
+
+    this.setState({ layers: [] })
+
+  }
+
+
+  handleNewImage(event){
+
+    const file = event.target.files[0];
+    const imgSrc = window.URL.createObjectURL(file);
+
+    //console.log(imgSrc, imgSrc.width, imgSrc.height);
+
+    //const ctx = document.getElementById('imageManipulationOutput').getContext('2d');
+    //let canvas = document.getElementById('imageManipulationOutput');
+    //console.log(canvas);
+
+    console.log(event);
+
+    //ctx.drawImage(imgSrc, 0, 0);
+
+    this.setState({ image: imgSrc });
+
+  }
+
+
   render() {
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+
+        <Fragment>
+          <NavBar/>
+
+          <Grid justify="center" container spacing={16} style={{padding: 24}}>
+            <Grid item xs={12} md={2} padding={10}>
+                  <Settings addLayer={this.addLayer}/>
+            </Grid>
+            <Grid item xs={12} md={8}>
+                  <Workspace image={this.state.image} handleNewImage={this.handleNewImage}/>
+            </Grid>
+            <Grid item xs={12} md={2}>
+                  <Layers layers={this.state.layers} clearLayers={this.clearLayers}/>
+            </Grid>                                        
+          
+          </Grid>
+        </Fragment>
     );
   }
 }
