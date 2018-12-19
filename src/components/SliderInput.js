@@ -9,32 +9,21 @@ class SliderInput extends Component {
 constructor(props){
 
     super(props);
-    this.state = {
-        value: this.props.value
-    }
-
     this.handleChange = this.handleChange.bind(this);
-    this.updateAppState = this.updateAppState.bind(this);
 
 }
 
     
     handleChange = (event, value) => {
         
-        this.setState({ value });
+        this.props.updateSetting(this.props.name, value);
     };
-
-    updateAppState = () => {
-
-        this.props.updateSetting(this.props.name, this.state.value);
-
-    }
              
 
 render(){
 
     //const { value } = this.state;
-    const { value, label, min, max, step, disabled } = this.props;
+    const { value, label, min, max, step, disabled, renderCaman } = this.props;
 
     return (
         <Fragment>
@@ -52,7 +41,7 @@ render(){
                         step={step}
                         aria-labelledby={`label{$label}`}
                         onChange={this.handleChange}
-                        onDragEnd={this.updateAppState}
+                        onDragEnd={renderCaman}
                         disabled={disabled}
                     
                     />

@@ -34,6 +34,7 @@ class App extends Component {
     this.handleNewImage = this.handleNewImage.bind(this);
     this.updateSetting = this.updateSetting.bind(this);
     this.resetSettings = this.resetSettings.bind(this);
+    this.renderCaman = this.renderCaman.bind(this);
 
   }
 
@@ -63,21 +64,25 @@ class App extends Component {
       settings: { ...this.state.settings, [name] : value }
     })
 
-      const { brightness, contrast } = this.state.settings;
+  }
 
-      const sourceImage = this.state.image;
-      const canvas = document.getElementById('caman');
+  renderCaman(){
 
-      Caman('#caman', sourceImage, function() {
+    const { brightness, contrast } = this.state.settings;
 
-        //this.replaceCanvas(canvas);
-        this.revert(canvas); //THIS IS IT YES
-        this.brightness(brightness);
-        this.contrast(contrast);
-        this.render();
+    const sourceImage = this.state.image;
+    const canvas = document.getElementById('caman');
+
+    Caman('#caman', sourceImage, function() {
+
+      //this.replaceCanvas(canvas);
+      this.revert(canvas); //THIS IS IT YES
+      this.brightness(brightness);
+      this.contrast(contrast);
+      this.render();
 
 
-      })
+    })
 
   }
 
@@ -89,7 +94,9 @@ class App extends Component {
         brightness: 0,
         contrast: 0,
       }
-    })
+    }, () => { this.renderCaman(); });
+
+    
 
   }
 
@@ -98,7 +105,7 @@ class App extends Component {
 
     const file = event.target.files[0];
     const imgSrc = window.URL.createObjectURL(file);
-    this.setState({ image: imgSrc });
+    this.setState({ image: imgSrc }, () => { this.renderCaman(); });
 
   }
 
@@ -113,13 +120,25 @@ class App extends Component {
 
           <Grid justify="center" container spacing={16} style={{padding: 24}}>
             <Grid item xs={12} md={2} padding={10}>
-                  <Settings values={this.state.settings} image={this.state.image} addLayer={this.addLayer} updateSetting={this.updateSetting} resetSettings={this.resetSettings}/>
+                  <Settings 
+                    values={this.state.settings} 
+                    image={this.state.image} 
+                    addLayer={this.addLayer} 
+                    updateSetting={this.updateSetting} 
+                    renderCaman={this.renderCaman}
+                    resetSettings={this.resetSettings}/>
             </Grid>
             <Grid item xs={12} md={8}>
-                  <Workspace image={this.state.image} handleNewImage={this.handleNewImage}/>
+                  <Workspace 
+                    image={this.state.image} 
+                    handleNewImage={this.handleNewImage}
+                  />
             </Grid>
             <Grid item xs={12} md={2}>
-                  <Layers layers={this.state.layers} clearLayers={this.clearLayers}/>
+                  <Layers 
+                    layers={this.state.layers} 
+                    clearLayers={this.clearLayers}
+                  />
             </Grid>                                        
           
           </Grid>

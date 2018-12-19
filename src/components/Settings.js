@@ -18,7 +18,7 @@ class Settings extends Component {
         
 render(props){
 
-    const { values, image } = this.props;
+    const { values, image, renderCaman } = this.props;
 
     //Disable the inputs if no image has been uploaded yet
     const isEnabled = (image ? false : true );
@@ -40,6 +40,7 @@ render(props){
                             step={1} 
                             updateSetting={this.props.updateSetting} 
                             disabled={isEnabled}
+                            renderCaman={renderCaman}
                         />
 
                         <SliderInput 
@@ -51,6 +52,7 @@ render(props){
                             step={1} 
                             updateSetting={this.props.updateSetting} 
                             disabled={isEnabled}
+                            renderCaman={renderCaman}
                         />
                         
                         <ListItem>
