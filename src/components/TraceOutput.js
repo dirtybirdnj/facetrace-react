@@ -36,7 +36,8 @@ class TraceOutput extends Component {
     return(
         <Fragment>
             <canvas id="canvas" ref="canvas" width={this.state.width} height={this.state.height} />
-            <img ref="image" style={{display: 'none' }} alt="user input" src={this.props.image}/>
+            <canvas id="caman" ref="caman" width={this.state.width} height={this.state.height} />
+            <img ref="image" id="image" alt="user input" style={{ display: 'none'}} src={this.props.image} />
         </Fragment>
 
 

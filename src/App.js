@@ -11,6 +11,8 @@ import Settings from './components/Settings';
 import Layers from './components/Layers';
 import Workspace from './components/Workspace';
 
+const Caman = window.Caman;
+
 class App extends Component {
 
   constructor(props){
@@ -56,20 +58,26 @@ class App extends Component {
 
   updateSetting(name, value){
 
-    console.log('app.js',name, value);
-    this.setState({  ...this.state,
-      settings: { ...this.state.settings, [name] : value }})
+    this.setState({  
+      ...this.state,
+      settings: { ...this.state.settings, [name] : value }
+    })
 
-      // let canvas = document.getElementById('canvas');
-      // Caman('#canvas', () => {
+      const { brightness, contrast } = this.state.settings;
 
-      //   this.replaceCanvas(canvas);
-      //   this.brightness(this.state.brightness)
-      //   .contrast(this.state.contrast)
-      //   .render();
+      const sourceImage = this.state.image;
+      const canvas = document.getElementById('caman');
+
+      Caman('#caman', sourceImage, function() {
+
+        //this.replaceCanvas(canvas);
+        this.revert(canvas); //THIS IS IT YES
+        this.brightness(brightness);
+        this.contrast(contrast);
+        this.render();
 
 
-      // })
+      })
 
   }
 
@@ -82,8 +90,6 @@ class App extends Component {
         contrast: 0,
       }
     })
-
-    console.log(this.state);
 
   }
 
@@ -102,6 +108,7 @@ class App extends Component {
     return (
 
         <Fragment>
+
           <NavBar/>
 
           <Grid justify="center" container spacing={16} style={{padding: 24}}>

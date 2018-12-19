@@ -12,20 +12,16 @@ import SliderInput from './SliderInput';
 
 class Settings extends Component {
 
-constructor(props){
-    super(props);
-}
+// constructor(props){
+//     super(props);
+// }
         
 render(props){
 
     const { values, image } = this.props;
 
     //Disable the inputs if no image has been uploaded yet
-    
-
     const isEnabled = (image ? false : true );
-
-    console.log('image checks', image, isEnabled)
 
     return (
         <Fragment>
