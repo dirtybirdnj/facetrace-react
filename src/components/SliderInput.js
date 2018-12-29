@@ -41,7 +41,7 @@ render(){
                         step={step}
                         aria-labelledby={`label{$label}`}
                         onChange={this.handleChange}
-                        onDragEnd={renderCaman}
+                        onDragEnd={ () => { renderCaman(true) } }
                         disabled={disabled}
                     
                     />

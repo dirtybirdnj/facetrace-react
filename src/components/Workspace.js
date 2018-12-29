@@ -47,7 +47,10 @@ render(){
                             <br/>
                         </Fragment>                        
                     ) : (
-                        <TraceOutput image={this.props.image}/>
+                        <TraceOutput 
+                            image={this.props.image}
+                            activeLayer={this.props.activeLayer}
+                        />
                     )}
                     
                 </Paper>

@@ -12,6 +12,7 @@ import Layers from './components/Layers';
 import Workspace from './components/Workspace';
 
 const Caman = window.Caman;
+const Potrace = window.Potrace;
 
 class App extends Component {
 
@@ -25,7 +26,8 @@ class App extends Component {
         contrast: 0,
       },
       image: null,
-      layers: []
+      layers: [],
+      activeLayer: null,
 
     }
 
@@ -35,16 +37,18 @@ class App extends Component {
     this.updateSetting = this.updateSetting.bind(this);
     this.resetSettings = this.resetSettings.bind(this);
     this.renderCaman = this.renderCaman.bind(this);
+    this.traceImage = this.traceImage.bind(this);
 
   }
 
-  addLayer(){
+  addLayer(pathString){
 
       const { layers, settings } = this.state;
  
       const newLayer = {
         label:  'Layer ' + (layers.length + 1),
-        settings: settings
+        settings: settings,
+        path: pathString
       }
 
       this.setState({ layers: [ ...layers, newLayer ]});
@@ -62,27 +66,7 @@ class App extends Component {
     this.setState({  
       ...this.state,
       settings: { ...this.state.settings, [name] : value }
-    })
-
-  }
-
-  renderCaman(){
-
-    const { brightness, contrast } = this.state.settings;
-
-    const sourceImage = this.state.image;
-    const canvas = document.getElementById('caman');
-
-    Caman('#caman', sourceImage, function() {
-
-      //this.replaceCanvas(canvas);
-      this.revert(canvas); //THIS IS IT YES
-      this.brightness(brightness);
-      this.contrast(contrast);
-      this.render();
-
-
-    })
+    });
 
   }
 
@@ -94,20 +78,79 @@ class App extends Component {
         brightness: 0,
         contrast: 0,
       }
-    }, () => { this.renderCaman(); });
-
-    
+    }, () => { this.renderCaman(false); });
 
   }
-
 
   handleNewImage(event){
 
     const file = event.target.files[0];
     const imgSrc = window.URL.createObjectURL(file);
-    this.setState({ image: imgSrc }, () => { this.renderCaman(); });
+    this.setState({ image: imgSrc }, () => { this.renderCaman(false); });
+
+  }  
+
+  //Set trace to true/false to trigger potrace
+  renderCaman(trace){
+
+    const { brightness, contrast } = this.state.settings;
+
+    const sourceImage = this.state.image;
+    const canvas = document.getElementById('caman');
+
+    //Scope, oy vey!
+    const traceImage = this.traceImage
+
+    Caman('#caman', sourceImage, function() {
+
+      //this.replaceCanvas(canvas);
+      this.revert(canvas); //THIS IS IT YES
+      this.brightness(brightness);
+      this.contrast(contrast);
+      this.render(function(){
+
+        //Allow some operations to trigger trace, some to avoid
+        if(trace){ 
+          traceImage(this.toBase64());
+        }
+
+      });
+
+
+    })
 
   }
+
+  traceImage(base64ImageData){
+
+    Potrace.loadImageFromUrl(base64ImageData);
+    Potrace.process(() => {
+
+        //console.log(Potrace.getSVG(1,"curve"));
+        const rawSVG = Potrace.getSVG(1,"curve");
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(rawSVG, "image/svg+xml");
+        const root = doc.firstChild;
+        const pathElement = root.firstChild;
+        const path = pathElement.getAttribute('d');
+        //const path = pathElement.getAttribute('')
+        //console.log('child nodes',doc.childNodes);
+        //console.log(path);
+        this.setState({ activeLayer: path})
+
+        console.log('setting new active layer');
+
+
+        //this.addLayer(path);
+
+
+    })
+    
+
+
+  }
+
+
 
 
   render() {
@@ -130,7 +173,8 @@ class App extends Component {
             </Grid>
             <Grid item xs={12} md={8}>
                   <Workspace 
-                    image={this.state.image} 
+                    image={this.state.image}
+                    activeLayer={this.state.activeLayer} 
                     handleNewImage={this.handleNewImage}
                   />
             </Grid>
