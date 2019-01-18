@@ -24,6 +24,7 @@ class App extends Component {
       settings: {
         brightness: 0,
         contrast: 0,
+        turdsize: 2
       },
       image: null,
       layers: [],
@@ -41,17 +42,19 @@ class App extends Component {
 
   }
 
-  addLayer(pathString){
+  addLayer(){
 
-      const { layers, settings } = this.state;
+      const { layers, settings, activeLayer } = this.state;
  
       const newLayer = {
+        id: 'layer' + (layers.length + 1),
         label:  'Layer ' + (layers.length + 1),
         settings: settings,
-        path: pathString
+        path: activeLayer
       }
 
       this.setState({ layers: [ ...layers, newLayer ]});
+      this.setState({ activeLayer: null});
 
   }
 
@@ -86,6 +89,9 @@ class App extends Component {
 
     const file = event.target.files[0];
     const imgSrc = window.URL.createObjectURL(file);
+
+    console.log('image test', imgSrc, imgSrc.width, imgSrc.height);
+
     this.setState({ image: imgSrc }, () => { this.renderCaman(false); });
 
   }  
@@ -123,35 +129,27 @@ class App extends Component {
 
   traceImage(base64ImageData){
 
-    Potrace.loadImageFromUrl(base64ImageData);
-    Potrace.process(() => {
+    const { turdsize } = this.state.settings;
+    const potraceSettings = {
+      turdsize: turdsize
+    }
 
-        //console.log(Potrace.getSVG(1,"curve"));
+
+    Potrace.loadImageFromUrl(base64ImageData);
+    Potrace.setParameter(potraceSettings);
+    Potrace.process((potraceSettings) => {
+
         const rawSVG = Potrace.getSVG(1,"curve");
         const parser = new DOMParser();
         const doc = parser.parseFromString(rawSVG, "image/svg+xml");
         const root = doc.firstChild;
         const pathElement = root.firstChild;
         const path = pathElement.getAttribute('d');
-        //const path = pathElement.getAttribute('')
-        //console.log('child nodes',doc.childNodes);
-        //console.log(path);
         this.setState({ activeLayer: path})
-
-        console.log('setting new active layer');
-
-
-        //this.addLayer(path);
-
 
     })
     
-
-
   }
-
-
-
 
   render() {
 
@@ -162,6 +160,7 @@ class App extends Component {
           <NavBar/>
 
           <Grid justify="center" container spacing={16} style={{padding: 24}}>
+            
             <Grid item xs={12} md={2} padding={10}>
                   <Settings 
                     values={this.state.settings} 
@@ -171,13 +170,16 @@ class App extends Component {
                     renderCaman={this.renderCaman}
                     resetSettings={this.resetSettings}/>
             </Grid>
+
             <Grid item xs={12} md={8}>
                   <Workspace 
                     image={this.state.image}
-                    activeLayer={this.state.activeLayer} 
+                    activeLayer={this.state.activeLayer}
+                    layers={this.state.layers} 
                     handleNewImage={this.handleNewImage}
                   />
             </Grid>
+
             <Grid item xs={12} md={2}>
                   <Layers 
                     layers={this.state.layers} 
@@ -186,9 +188,12 @@ class App extends Component {
             </Grid>                                        
           
           </Grid>
+
         </Fragment>
     );
+
   }
+  
 }
 
 export default App;

@@ -20,7 +20,7 @@ const styles = theme => ({
 class Workspace extends Component {
 render(){
 
-    const { classes } = this.props;
+    const { classes, image, activeLayer, layers } = this.props;
 
     return (
         <Fragment>
@@ -48,8 +48,9 @@ render(){
                         </Fragment>                        
                     ) : (
                         <TraceOutput 
-                            image={this.props.image}
-                            activeLayer={this.props.activeLayer}
+                            image={image}
+                            activeLayer={activeLayer}
+                            layers={layers}
                         />
                     )}
                     

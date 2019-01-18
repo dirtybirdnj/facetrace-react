@@ -54,6 +54,18 @@ render(props){
                             disabled={isEnabled}
                             renderCaman={renderCaman}
                         />
+
+                        <SliderInput 
+                            name="turdsize" 
+                            label="Turdsize" 
+                            value={values.turdsize} 
+                            min={-100} 
+                            max={100} 
+                            step={1} 
+                            updateSetting={this.props.updateSetting} 
+                            disabled={isEnabled}
+                            renderCaman={renderCaman}
+                        />                        
                         
                         <ListItem>
                             <Button onClick={this.props.resetSettings} variant="contained" color="secondary" fullWidth={true}>Reset Settings</Button>

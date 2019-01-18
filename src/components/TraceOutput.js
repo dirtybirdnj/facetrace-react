@@ -11,7 +11,16 @@ class TraceOutput extends Component {
             height: 0
         }
 
+        //this.renderLayers = this.renderLayers.bind(this);
+
     }
+
+    // renderLayers(stateLayers){
+    //     return stateLayers.map((layer => {
+    //         return <path d={layer} stroke="#000000" strokeWidth="1" fill="none"/>
+    //     }))
+
+    // }
 
 
     // componentDidMount() {
@@ -33,16 +42,19 @@ class TraceOutput extends Component {
 
     render(){
 
-    const { activeLayer } = this.props;
+    const { activeLayer, layers } = this.props;
 
     return(
         <Fragment>
             
-            <canvas id="caman" ref="caman" width={this.state.width} height={this.state.height} />
+            <canvas id="caman" ref="caman" style={{ display: 'none'}} width={this.state.width} height={this.state.height} />
             <img ref="image" id="image" alt="user input" style={{ display: 'none'}} src={this.props.image} />
-            <svg>
+            <svg width={500} height={500}>
                 
                 <path d={activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
+                {layers.map((layer) => {
+                    return <path key={layer.id} d={layer.path} stroke="#000000" strokeWidth="1" fill="none"/>
+                })}
                 
             </svg>
 
