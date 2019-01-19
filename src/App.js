@@ -89,15 +89,12 @@ class App extends Component {
 
     const file = event.target.files[0];
     const imgSrc = window.URL.createObjectURL(file);
-
-    console.log('image test', imgSrc, imgSrc.width, imgSrc.height);
-
-    this.setState({ image: imgSrc }, () => { this.renderCaman(false); });
+    this.setState({ image: imgSrc }, () => { this.renderCaman(); });
 
   }  
 
   //Set trace to true/false to trigger potrace
-  renderCaman(trace){
+  renderCaman(trace = true){
 
     const { brightness, contrast } = this.state.settings;
 
@@ -193,7 +190,7 @@ class App extends Component {
     );
 
   }
-  
+
 }
 
 export default App;
