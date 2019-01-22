@@ -32,12 +32,13 @@ class SliderInput extends Component {
                     <ListItem>
                         <ListItemText primary={<Typography id={`label{$label}`} >{label}: {value}</Typography>} />
                     </ListItem>
-                    
+                    {/* //TODO: Implement incremental settings bumps
                     <ListItem>
                         <Button variant="contained" size="small" color="default">-</Button>
                         <Button variant="contained" size="small" color="default">Reset</Button>
                         <Button variant="contained" size="small" color="default">+</Button>
                     </ListItem>
+                    */}
                     
                     <ListItem>
                         <Slider
