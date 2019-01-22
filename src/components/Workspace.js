@@ -122,6 +122,8 @@ class Workspace extends Component {
                                 <Button variant="contained" color="primary" component="span" onClick={this.saveSVG}>
                                     Save SVG
                                 </Button>
+                                <br/>
+                                <br/>
                 
                             </Fragment>
                         )}

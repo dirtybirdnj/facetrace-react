@@ -173,7 +173,7 @@ class App extends Component {
 
           <NavBar/>
 
-          <Grid justify="center" container spacing={16} style={{padding: 24}}>
+          <Grid justify="center" container spacing={16} style={{padding: 24, height: '90%'}}>
             
             <Grid item xs={12} md={2} padding={10}>
                   <Settings 
@@ -185,7 +185,7 @@ class App extends Component {
                     resetSettings={this.resetSettings}/>
             </Grid>
 
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={8} style={{height: '100%'}}>
                   <Workspace 
                     image={this.state.image}
                     activeLayer={this.state.activeLayer}
