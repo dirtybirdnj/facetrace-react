@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+import FileSaver from 'file-saver';
 
 class Workspace extends Component {
 
@@ -15,7 +16,18 @@ class Workspace extends Component {
             height: 0
         }
 
+        this.saveSVG = this.saveSVG.bind(this);
     }
+
+    saveSVG(){
+
+        const rawSVG = this.refs.svgOutput;
+        const XMLS = new XMLSerializer();
+        const svgString = XMLS.serializeToString(rawSVG);
+        const blob = new Blob([svgString], { type: 'image/svg+xml' });
+        FileSaver.saveAs(blob, 'facetrace.svg');
+    
+    }    
 
     componentDidUpdate() {
 
@@ -46,7 +58,7 @@ class Workspace extends Component {
 
     render(){
 
-        const { image, activeLayer, layers } = this.props;
+        const { image, activeLayer, layers, handleNewImage } = this.props;
 
         return (
             <Fragment>
@@ -60,7 +72,7 @@ class Workspace extends Component {
                                 accept="image/*"
                                 id="contained-button-file"
                                 type="file"
-                                onChange={this.props.handleNewImage}
+                                onChange={handleNewImage}
                                 />
                                 <label htmlFor="contained-button-file">
                                 <Button variant="contained" component="span">
@@ -79,15 +91,21 @@ class Workspace extends Component {
                                     id="svgWrapper" 
                                     style={{ 
                                         background: `url("${image}")`,
-                                        'background-repeat': 'no-repeat',
-                                        'background-position': 'center center',
-                                        'text-align': 'center'
+                                        'backgroundRepeat': 'no-repeat',
+                                        'backgroundPosition': 'top center',
+                                        'textAlign': 'center'
                                     }} 
                                     width="100%" 
                                     height="100%"
                                 >
                                     
-                                    <svg style={{border: '1px solid black'}} width={this.state.width} height={this.state.height}>
+                                    <svg 
+                                        xmlns="http://www.w3.org/2000/svg" 
+                                        id="svgOutput" 
+                                        ref="svgOutput" 
+                                        width={this.state.width} 
+                                        height={this.state.height}
+                                    >
                                         
                                         <path d={activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
                                         {layers.map((layer) => { return <path key={layer.id} d={layer.path} stroke="#000000" strokeWidth="1" fill="none"/> })}
@@ -95,6 +113,10 @@ class Workspace extends Component {
                                     </svg>
 
                                 </div>
+                                <br/>
+                                <Button variant="contained" color="primary" component="span" onClick={this.saveSVG}>
+                                    Save SVG
+                                </Button>
                 
                             </Fragment>
                         )}
