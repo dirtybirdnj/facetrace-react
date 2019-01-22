@@ -40,7 +40,7 @@ class Workspace extends Component {
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientWidth;
 
-        console.log('container dimensions', container, containerWidth, containerHeight);
+        //console.log('container dimensions', container, containerWidth, containerHeight);
 
         // if(img.width > containerWidth){
         //     elemWidth = containerWidth;
@@ -58,7 +58,7 @@ class Workspace extends Component {
 
     render(){
 
-        const { image, activeLayer, layers, handleNewImage } = this.props;
+        const { image, activeLayer, highlightLayer, layers, handleNewImage } = this.props;
 
         return (
             <Fragment>
@@ -108,7 +108,12 @@ class Workspace extends Component {
                                     >
                                         
                                         <path d={activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
-                                        {layers.map((layer) => { return <path key={layer.id} d={layer.path} stroke="#000000" strokeWidth="1" fill="none"/> })}
+                                        {layers.map((layer) => { 
+                                        
+                                            const layerColor = (layer.id === highlightLayer ? '#00FF00' : '#000000');
+                                            return <path key={layer.id} d={layer.path} stroke={layerColor} strokeWidth="1" fill="none"/> 
+                                            
+                                        })}
                                         
                                     </svg>
 

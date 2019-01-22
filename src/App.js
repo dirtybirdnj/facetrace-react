@@ -29,6 +29,7 @@ class App extends Component {
       image: null,
       layers: [],
       activeLayer: null,
+      highlightLayer: null
 
     }
 
@@ -39,6 +40,8 @@ class App extends Component {
     this.resetSettings = this.resetSettings.bind(this);
     this.renderCaman = this.renderCaman.bind(this);
     this.traceImage = this.traceImage.bind(this);
+    this.removeLayer = this.removeLayer.bind(this);
+    this.highlightLayer = this.highlightLayer.bind(this);
 
   }
 
@@ -57,6 +60,20 @@ class App extends Component {
       this.setState({ activeLayer: null});
 
   }
+
+  removeLayer(layerID){
+
+    const { layers } = this.state;
+    const newLayers = layers.filter((item) => { return item.id != layerID });
+    this.setState({ layers: newLayers});
+
+  }
+
+  highlightLayer(layerID = null){
+
+    this.setState({ highlightLayer: layerID });
+
+  }  
 
   clearLayers(){
 
@@ -172,6 +189,7 @@ class App extends Component {
                   <Workspace 
                     image={this.state.image}
                     activeLayer={this.state.activeLayer}
+                    highlightLayer={this.state.highlightLayer}
                     layers={this.state.layers} 
                     handleNewImage={this.handleNewImage}
                   />
@@ -181,6 +199,8 @@ class App extends Component {
                   <Layers 
                     layers={this.state.layers} 
                     clearLayers={this.clearLayers}
+                    removeLayer={this.removeLayer}
+                    highlightLayer={this.highlightLayer}
                   />
             </Grid>                                        
           

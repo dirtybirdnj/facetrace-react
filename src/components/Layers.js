@@ -7,17 +7,16 @@ import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
-
-
 class Layers extends Component {
+
 render(){
+
+    const { removeLayer, highlightLayer } = this.props;
 
     return (
         <Fragment>
             
                 <Paper>
-                    
-                    
                     
                     <List>
                         <ListItem>
@@ -27,8 +26,23 @@ render(){
                         { this.props.layers.map((layer) => {
                         
                             return(
-                                <ListItem key={layer.label}>
-                                    <Typography variant="body1" color="inherit">{layer.label}</Typography>
+                                <ListItem key={layer.label} className="layerRow"
+                                onMouseEnter={() => { highlightLayer(layer.id) }}
+                                onMouseLeave={() => { highlightLayer() }}
+                                >
+                                    
+                                    <Typography className="layerLabel" variant="subtitle1" color="inherit" inline="true" component="span">{layer.label}</Typography>
+                                    
+                                    <Button 
+                                        className="layerRemove" 
+                                        variant="outlined" 
+                                        color="secondary" 
+                                        size="small"
+                                        onClick={() => { removeLayer(layer.id) }}
+                                    >
+                                        Remove
+                                    </Button>                                    
+                                    
                                 </ListItem>
                             );
 

@@ -11,3 +11,21 @@ body {
     padding: 0;
     /* background-color: rgb(255, 0, 0); */
 }
+
+.layerRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.layerRow:hover {
+    background-color: rgb(216, 218, 218);
+}
+
+.layerLabel {
+    flex-basis: 75%;
+}
+
+.layerRemove {
+    flex-basis: 25%;
+    text-align: right;
+}
