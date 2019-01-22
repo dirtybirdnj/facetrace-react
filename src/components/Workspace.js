@@ -75,14 +75,26 @@ class Workspace extends Component {
             
                                 <canvas id="caman" ref="caman" style={{ display: 'none'}} width={this.state.width} height={this.state.height} />
                                 <img ref="image" id="image" alt="user input" style={{ display: 'none'}} src={image} />
-                                <svg style={{border: '1px solid black'}} width={this.state.width} height={this.state.height}>
+                                <div 
+                                    id="svgWrapper" 
+                                    style={{ 
+                                        background: `url("${image}")`,
+                                        'background-repeat': 'no-repeat',
+                                        'background-position': 'center center',
+                                        'text-align': 'center'
+                                    }} 
+                                    width="100%" 
+                                    height="100%"
+                                >
                                     
-                                    <path d={activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
-                                    {layers.map((layer) => {
-                                        return <path key={layer.id} d={layer.path} stroke="#000000" strokeWidth="1" fill="none"/>
-                                    })}
-                                    
-                                </svg>
+                                    <svg style={{border: '1px solid black'}} width={this.state.width} height={this.state.height}>
+                                        
+                                        <path d={activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
+                                        {layers.map((layer) => { return <path key={layer.id} d={layer.path} stroke="#000000" strokeWidth="1" fill="none"/> })}
+                                        
+                                    </svg>
+
+                                </div>
                 
                             </Fragment>
                         )}
