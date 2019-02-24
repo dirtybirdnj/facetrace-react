@@ -26,6 +26,7 @@ class App extends Component {
         contrast: 0,
         turdsize: 2
       },
+      activeSetting: null,
       image: null,
       layers: [],
       activeLayer: null,

@@ -38,9 +38,9 @@ class Workspace extends Component {
         let elemHeight = img.height;
 
         const containerWidth = container.clientWidth;
-        const containerHeight = container.clientWidth;
+        const containerHeight = container.clientHeight;
 
-        //console.log('container dimensions', container, containerWidth, containerHeight);
+        console.log('container dimensions', container, containerWidth, containerHeight);
 
         // if(img.width > containerWidth){
         //     elemWidth = containerWidth;
@@ -50,7 +50,9 @@ class Workspace extends Component {
             console.log('loaded image dimensions', img.width, img.height);
             this.setState({
                 width: img.width,
-                height: img.height
+                height: img.height,
+                containerWidth: containerWidth,
+                containerHeight: containerHeight
             });
         }
 
@@ -64,9 +66,9 @@ class Workspace extends Component {
             <Fragment>
                 
                     <Paper align="center" id="workspaceContainer" ref="workspaceContainer">
-                        <br/>
                         {!image ? (
                             <Fragment>
+                                <br/>
                                 <input
                                 style={{display: 'none'}}
                                 accept="image/*"
@@ -85,39 +87,33 @@ class Workspace extends Component {
                         ) : (
                             <Fragment>
             
-                                <canvas id="caman" ref="caman" style={{ display: 'none'}} width={this.state.width} height={this.state.height} />
                                 <img ref="image" id="image" alt="user input" style={{ display: 'none'}} src={image} />
-                                <div 
-                                    id="svgWrapper" 
+                                <canvas id="caman" ref="caman" style={{                                        
+                                    width: this.state.containerWidth,
+                                    height: this.state.containerHeight,}} 
+                                />
+                             
+                                <svg 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    id="svgOutput" 
+                                    ref="svgOutput"
+                                    viewBox={'0 0 ' + this.state.width + ' ' + this.state.height}                                    
                                     style={{ 
-                                        background: `url("${image}")`,
-                                        'backgroundRepeat': 'no-repeat',
-                                        'backgroundPosition': 'top center',
-                                        'textAlign': 'center'
+                                        position: 'relative',
+                                        top:  `-${this.state.containerHeight}px`,
+                                        width: this.state.containerWidth,
+                                        height: this.state.containerHeight,
                                     }} 
-                                    width="100%" 
-                                    height="100%"
                                 >
                                     
-                                    <svg 
-                                        xmlns="http://www.w3.org/2000/svg" 
-                                        id="svgOutput" 
-                                        ref="svgOutput" 
-                                        width={this.state.width} 
-                                        height={this.state.height}
-                                    >
-                                        
-                                        <path d={activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
-                                        {layers.map((layer) => { 
-                                        
-                                            const layerColor = (layer.id === highlightLayer ? '#00FF00' : '#000000');
-                                            return <path key={layer.id} d={layer.path} stroke={layerColor} strokeWidth="1" fill="none"/> 
-                                            
-                                        })}
-                                        
-                                    </svg>
+                                    <path d={activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
+                                    {layers.map((layer) => { 
+                                        const layerColor = (layer.id === highlightLayer ? '#00FF00' : '#000000');
+                                        return <path key={layer.id} d={layer.path} stroke={layerColor} strokeWidth="1" fill="none"/> 
+                                    })}
+                                    
+                                </svg>
 
-                                </div>
                                 <br/>
                                 <Button variant="contained" color="primary" component="span" onClick={this.saveSVG}>
                                     Save SVG

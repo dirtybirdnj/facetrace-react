@@ -60,7 +60,7 @@ render(props){
                             label="Turdsize" 
                             value={values.turdsize} 
                             min={-100} 
-                            max={100} 
+                            max={300} 
                             step={1} 
                             updateSetting={this.props.updateSetting} 
                             disabled={isEnabled}

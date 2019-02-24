@@ -40,7 +40,7 @@ class SliderInput extends Component {
                     </ListItem>
                     */}
                     
-                    <ListItem>
+                    <ListItem onClick={() => { console.log('set this active input');}}>
                         <Slider
                             
                             value={value}
