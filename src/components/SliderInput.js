@@ -18,16 +18,19 @@ class SliderInput extends Component {
     handleChange = (event, value) => {
         
         this.props.updateSetting(this.props.name, value);
+        this.props.setActiveInput(this.props.name);
     };
+
+
                 
 
     render(){
 
         //const { value } = this.state;
-        const { value, label, min, max, step, disabled, renderCaman } = this.props;
+        const { value, name, label, min, max, step, disabled, renderCaman, setActiveInput, activeInput } = this.props;
 
         return (
-            <Fragment>
+            <div className={ (name === activeInput ? 'activeInput' : 'not-active')}>
                 
                     <ListItem>
                         <ListItemText primary={<Typography id={`label{$label}`} >{label}: {value}</Typography>} />
@@ -40,24 +43,21 @@ class SliderInput extends Component {
                     </ListItem>
                     */}
                     
-                    <ListItem onClick={() => { console.log('set this active input');}}>
+                    <ListItem>
                         <Slider
-                            
                             value={value}
                             min={min}
                             max={max}
                             step={step}
                             aria-labelledby={`label{$label}`}
                             onChange={this.handleChange}
-                            onDragEnd={ () => { renderCaman(true) } }
+                            onDragEnd={ () => { renderCaman(true); }}
                             disabled={disabled}
-                        
                         />
                         
-                            
                     </ListItem>
             
-            </Fragment>
+            </div>
 
         );
     }

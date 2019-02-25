@@ -7,11 +7,26 @@ import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
+import FileSaver from 'file-saver';
+
 class Layers extends Component {
+    
+saveSVG(){
+
+    const rawSVG = this.refs.svgOutput;
+    const XMLS = new XMLSerializer();
+    const svgString = XMLS.serializeToString(rawSVG);
+    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    FileSaver.saveAs(blob, 'facetrace.svg');
+
+}      
 
 render(){
 
-    const { removeLayer, highlightLayer } = this.props;
+    const { image, removeLayer, highlightLayer, handleNewImage } = this.props;
+
+    //Disable the inputs if no image has been uploaded yet
+    const isEnabled = (image ? false : true );    
 
     return (
         <Fragment>
@@ -50,10 +65,39 @@ render(){
                                              
                         <Divider variant="middle" />
                         <ListItem>
-                            <Button onClick={this.props.clearLayers} variant="contained" color="secondary" fullWidth={true}>Clear All</Button>
+                            <Button disabled={isEnabled} onClick={this.props.addLayer} variant="contained" color="primary" fullWidth={true}>Add Layer</Button>
+                        </ListItem>                        
+                        <ListItem>
+                            <Button disabled={isEnabled} onClick={this.props.clearLayers} variant="contained" color="secondary" fullWidth={true}>Clear All</Button>
                         </ListItem>
                     </List>                    
                 </Paper>
+                
+                <br/>
+                
+                <Paper>
+                    
+                    <List>
+                        <ListItem>
+                            <Typography variant="title" color="inherit">Image</Typography>
+                        </ListItem>
+                                             
+                        <Divider variant="middle" />
+
+                        {!image ? (<ListItem>
+                            <input style={{display: 'none'}} accept="image/*" id="contained-button-file" type="file" onChange={handleNewImage} />
+                            <label style={{ width: '100%' }} htmlFor="contained-button-file">
+                            <Button variant="contained" color="primary" component="span" fullWidth={true}>
+                                Select an Image
+                            </Button>
+                            </label>
+                        </ListItem> ) : '' }
+                    
+                        <ListItem>
+                            <Button disabled={isEnabled} onClick={this.saveSVG} variant="contained" color="secondary" fullWidth={true}>Download SVG</Button>
+                        </ListItem>
+                    </List>                    
+                </Paper>                
         
         </Fragment>
 

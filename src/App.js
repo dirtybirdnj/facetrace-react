@@ -26,7 +26,7 @@ class App extends Component {
         contrast: 0,
         turdsize: 2
       },
-      activeSetting: null,
+      activeInput: null,
       image: null,
       layers: [],
       activeLayer: null,
@@ -43,6 +43,7 @@ class App extends Component {
     this.traceImage = this.traceImage.bind(this);
     this.removeLayer = this.removeLayer.bind(this);
     this.highlightLayer = this.highlightLayer.bind(this);
+    this.setActiveInput = this.setActiveInput.bind(this);    
 
   }
 
@@ -78,7 +79,7 @@ class App extends Component {
 
   clearLayers(){
 
-    this.setState({ layers: [] })
+    this.setState({ ...this.state, layers: [], activeLayer : null })
 
   }
 
@@ -100,6 +101,14 @@ class App extends Component {
         contrast: 0,
       }
     }, () => { this.renderCaman(false); });
+
+  }
+
+  setActiveInput(name){
+
+      this.setState({
+        activeInput: name
+      })
 
   }
 
@@ -183,7 +192,10 @@ class App extends Component {
                     addLayer={this.addLayer} 
                     updateSetting={this.updateSetting} 
                     renderCaman={this.renderCaman}
-                    resetSettings={this.resetSettings}/>
+                    resetSettings={this.resetSettings}
+                    setActiveInput={this.setActiveInput}
+                    activeInput={this.state.activeInput}
+                    />
             </Grid>
 
             <Grid item xs={12} md={8} style={{height: '100%'}}>
@@ -192,16 +204,17 @@ class App extends Component {
                     activeLayer={this.state.activeLayer}
                     highlightLayer={this.state.highlightLayer}
                     layers={this.state.layers} 
-                    handleNewImage={this.handleNewImage}
                   />
             </Grid>
 
             <Grid item xs={12} md={2}>
                   <Layers 
+                    image={this.state.image}
                     layers={this.state.layers} 
                     clearLayers={this.clearLayers}
                     removeLayer={this.removeLayer}
                     highlightLayer={this.highlightLayer}
+                    handleNewImage={this.handleNewImage}
                   />
             </Grid>                                        
           

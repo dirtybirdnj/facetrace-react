@@ -34,25 +34,13 @@ class Workspace extends Component {
         const img = this.refs.image;
         const container = ReactDOM.findDOMNode(this.refs.workspaceContainer);
 
-        let elemWidth = img.width;
-        let elemHeight = img.height;
-
-        const containerWidth = container.clientWidth;
-        const containerHeight = container.clientHeight;
-
-        console.log('container dimensions', container, containerWidth, containerHeight);
-
-        // if(img.width > containerWidth){
-        //     elemWidth = containerWidth;
-        // }
-
         img.onload = () => {
             console.log('loaded image dimensions', img.width, img.height);
             this.setState({
                 width: img.width,
                 height: img.height,
-                containerWidth: containerWidth,
-                containerHeight: containerHeight
+                containerWidth: (container.clientWidth - 15),
+                containerHeight: (container.clientHeight - 15)
             });
         }
 
@@ -60,7 +48,7 @@ class Workspace extends Component {
 
     render(){
 
-        const { image, activeLayer, highlightLayer, layers, handleNewImage } = this.props;
+        const { image, activeLayer, highlightLayer, layers } = this.props;
 
         return (
             <Fragment>
@@ -69,18 +57,7 @@ class Workspace extends Component {
                         {!image ? (
                             <Fragment>
                                 <br/>
-                                <input
-                                style={{display: 'none'}}
-                                accept="image/*"
-                                id="contained-button-file"
-                                type="file"
-                                onChange={handleNewImage}
-                                />
-                                <label htmlFor="contained-button-file">
-                                <Button variant="contained" component="span">
-                                    Select an Image
-                                </Button>
-                                </label>
+                                <p>Button Used to Be here. Please choose an image</p>
                                 <br/>
                                 <br/>
                             </Fragment>                        
@@ -90,9 +67,10 @@ class Workspace extends Component {
                                 <img ref="image" id="image" alt="user input" style={{ display: 'none'}} src={image} />
                                 <canvas id="caman" ref="caman" style={{                                        
                                     width: this.state.containerWidth,
-                                    height: this.state.containerHeight,}} 
-                                />
-                             
+                                    height: this.state.containerHeight,
+                                    marginTop: '10px'
+                                }} 
+                                />                                                             
                                 <svg 
                                     xmlns="http://www.w3.org/2000/svg" 
                                     id="svgOutput" 

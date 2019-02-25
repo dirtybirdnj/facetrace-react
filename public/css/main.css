@@ -36,3 +36,8 @@ body {
     height: 100%;
 }
 
+.activeInput {
+    background-color: #ACADAD;
+    color: white;
+}
+

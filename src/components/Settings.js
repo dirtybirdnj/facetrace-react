@@ -18,7 +18,7 @@ class Settings extends Component {
         
 render(props){
 
-    const { values, image, renderCaman } = this.props;
+    const { values, image, renderCaman, setActiveInput, activeInput } = this.props;
 
     //Disable the inputs if no image has been uploaded yet
     const isEnabled = (image ? false : true );
@@ -29,7 +29,7 @@ render(props){
                 <Paper>
                     <List>
                         <ListItem>
-                            <Typography variant="title" color="inherit">Settings</Typography>
+                            <Typography variant="title" color="inherit">Image Settings</Typography>
                         </ListItem>
                         <SliderInput 
                             name="brightness" 
@@ -41,6 +41,8 @@ render(props){
                             updateSetting={this.props.updateSetting} 
                             disabled={isEnabled}
                             renderCaman={renderCaman}
+                            setActiveInput={setActiveInput}
+                            activeInput={activeInput}
                         />
 
                         <SliderInput 
@@ -53,7 +55,26 @@ render(props){
                             updateSetting={this.props.updateSetting} 
                             disabled={isEnabled}
                             renderCaman={renderCaman}
-                        />
+                            setActiveInput={setActiveInput}
+                            activeInput={activeInput}
+                        />                    
+                        
+                        <ListItem>
+                            <Button disabled={isEnabled} onClick={this.props.resetSettings} variant="contained" color="secondary" fullWidth={true}>Reset Settings</Button>
+                        </ListItem>
+
+                        <ListItem>
+                            <Button disabled={isEnabled} onClick={this.props.addLayer} variant="contained" color="primary" fullWidth={true}>Add Layer</Button>
+                        </ListItem>
+
+                    </List>                    
+                </Paper>
+                <br/>
+                <Paper>
+                    <List>
+                        <ListItem>
+                            <Typography variant="title" color="inherit">Trace Settings</Typography>
+                        </ListItem>
 
                         <SliderInput 
                             name="turdsize" 
@@ -65,18 +86,18 @@ render(props){
                             updateSetting={this.props.updateSetting} 
                             disabled={isEnabled}
                             renderCaman={renderCaman}
+                            setActiveInput={setActiveInput}
+                            activeInput={activeInput}
                         />                        
                         
                         <ListItem>
-                            <Button onClick={this.props.resetSettings} variant="contained" color="secondary" fullWidth={true}>Reset Settings</Button>
+                            <Button disabled={isEnabled} onClick={this.props.resetSettings} variant="contained" color="secondary" fullWidth={true}>Reset Settings</Button>
                         </ListItem>
 
-                        <ListItem>
-                            <Button onClick={this.props.addLayer} variant="contained" color="primary" fullWidth={true}>Add Layer</Button>
-                        </ListItem>
+
 
                     </List>                    
-                </Paper>
+                </Paper>                
            
         </Fragment>
         );
