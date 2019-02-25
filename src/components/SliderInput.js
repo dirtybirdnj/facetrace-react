@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { Typography, ListItem, ListItemText } from '@material-ui/core';
 import Slider from '@material-ui/lab/Slider';
-import Button from '@material-ui/core/Button';
+import mouseTrap from 'react-mousetrap';
 
 
 class SliderInput extends Component {
@@ -21,13 +21,29 @@ class SliderInput extends Component {
         this.props.setActiveInput(this.props.name);
     };
 
+    componentWillMount(){
 
+        this.props.bindShortcut('left', function(){
+
+            //This is the wrong way to handle this.
+            //If the input is selected
+            if(this.props.activeInput === this.props.name){
+                
+                console.log('left!');
+            
+            }
+
+            
+
+        }.bind(this))
+
+    }
                 
 
     render(){
 
         //const { value } = this.state;
-        const { value, name, label, min, max, step, disabled, renderCaman, setActiveInput, activeInput } = this.props;
+        const { value, name, label, min, max, step, disabled, renderCaman, activeInput } = this.props;
 
         return (
             <div className={ (name === activeInput ? 'activeInput' : 'not-active')}>
@@ -65,4 +81,4 @@ class SliderInput extends Component {
 }
 
 //export default withStyles(styles)(SliderInput);
-export default SliderInput;
+export default mouseTrap(SliderInput);

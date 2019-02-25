@@ -66,7 +66,7 @@ class App extends Component {
   removeLayer(layerID){
 
     const { layers } = this.state;
-    const newLayers = layers.filter((item) => { return item.id != layerID });
+    const newLayers = layers.filter((item) => { return item.id !== layerID });
     this.setState({ layers: newLayers});
 
   }
