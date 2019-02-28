@@ -181,8 +181,6 @@ class App extends Component {
 
         <Fragment>
 
-          <NavBar/>
-
           <Grid justify="center" container spacing={16} style={{padding: 24, height: '90%'}}>
             
             <Grid item xs={12} md={2} padding={10}>
@@ -215,6 +213,7 @@ class App extends Component {
                     removeLayer={this.removeLayer}
                     highlightLayer={this.highlightLayer}
                     handleNewImage={this.handleNewImage}
+                    addLayer={this.addLayer}
                   />
             </Grid>                                        
           

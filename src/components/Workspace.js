@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
 import FileSaver from 'file-saver';
+import { nominalTypeHack } from 'prop-types';
 
 class Workspace extends Component {
 
@@ -31,6 +32,9 @@ class Workspace extends Component {
 
     componentDidUpdate() {
 
+        // pass the requested ref here
+        this.props.passRefUpward(this.refs);
+        
         const img = this.refs.image;
         const container = ReactDOM.findDOMNode(this.refs.workspaceContainer);
 
@@ -43,6 +47,7 @@ class Workspace extends Component {
                 containerHeight: (container.clientHeight - 15)
             });
         }
+
 
     }    
 
@@ -57,7 +62,7 @@ class Workspace extends Component {
                         {!image ? (
                             <Fragment>
                                 <br/>
-                                <p>Button Used to Be here. Please choose an image</p>
+                                <p>Select an Image to continue.</p>
                                 <br/>
                                 <br/>
                             </Fragment>                        
@@ -68,7 +73,7 @@ class Workspace extends Component {
                                 <canvas id="caman" ref="caman" style={{                                        
                                     width: this.state.containerWidth,
                                     height: this.state.containerHeight,
-                                    marginTop: '10px'
+                                    marginTop: '10px',
                                 }} 
                                 />                                                             
                                 <svg 

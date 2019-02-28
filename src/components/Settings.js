@@ -18,7 +18,7 @@ class Settings extends Component {
         
 render(props){
 
-    const { values, image, renderCaman, setActiveInput, activeInput } = this.props;
+    const { values, image, renderCaman, setActiveInput, activeInput, addLayer } = this.props;
 
     //Disable the inputs if no image has been uploaded yet
     const isEnabled = (image ? false : true );
@@ -64,7 +64,7 @@ render(props){
                         </ListItem>
 
                         <ListItem>
-                            <Button disabled={isEnabled} onClick={this.props.addLayer} variant="contained" color="primary" fullWidth={true}>Add Layer</Button>
+                            <Button disabled={isEnabled} onClick={addLayer} variant="contained" color="primary" fullWidth={true}>Add Layer</Button>
                         </ListItem>
 
                     </List>                    
