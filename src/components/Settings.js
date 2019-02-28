@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-
+import Divider from '@material-ui/core/Divider';
 
 
 import SliderInput from './SliderInput';
@@ -29,8 +29,9 @@ render(props){
                 <Paper>
                     <List>
                         <ListItem>
-                            <Typography variant="title" color="inherit">Image Settings</Typography>
+                            <Typography variant="button" color="inherit">Image Settings</Typography>
                         </ListItem>
+                        <Divider variant="middle" />
                         <SliderInput 
                             name="brightness" 
                             label="Brightness" 

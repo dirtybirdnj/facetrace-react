@@ -23,7 +23,7 @@ saveSVG(){
 
 render(){
 
-    const { image, removeLayer, highlightLayer, handleNewImage } = this.props;
+    const { image, removeLayer, highlightLayer, handleNewImage, saveSVG } = this.props;
 
     //Disable the inputs if no image has been uploaded yet
     const isEnabled = (image ? false : true );    
@@ -94,7 +94,7 @@ render(){
                         </ListItem> ) : '' }
                     
                         <ListItem>
-                            <Button disabled={isEnabled} onClick={this.saveSVG} variant="contained" color="secondary" fullWidth={true}>Download SVG</Button>
+                            <Button disabled={isEnabled} onClick={saveSVG} variant="contained" color="secondary" fullWidth={true}>Download SVG</Button>
                         </ListItem>
                     </List>                    
                 </Paper>                

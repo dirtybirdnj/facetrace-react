@@ -4,12 +4,14 @@ import 'typeface-roboto';
 import './App.css';
 
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
-import NavBar from './components/NavBar'
+import ReactDOM from 'react-dom';
+import FileSaver from 'file-saver';
 
 import Settings from './components/Settings';
 import Layers from './components/Layers';
-import Workspace from './components/Workspace';
 
 const Caman = window.Caman;
 const Potrace = window.Potrace;
@@ -21,6 +23,10 @@ class App extends Component {
     super(props);
     this.state = {
 
+      width: null,
+      height: null,
+      containerWidth: null,
+      containerHeight: null,
       settings: {
         brightness: 0,
         contrast: 0,
@@ -34,6 +40,8 @@ class App extends Component {
 
     }
 
+    this.svgOutput = React.createRef();
+
     this.addLayer = this.addLayer.bind(this);
     this.clearLayers = this.clearLayers.bind(this);
     this.handleNewImage = this.handleNewImage.bind(this);
@@ -43,7 +51,8 @@ class App extends Component {
     this.traceImage = this.traceImage.bind(this);
     this.removeLayer = this.removeLayer.bind(this);
     this.highlightLayer = this.highlightLayer.bind(this);
-    this.setActiveInput = this.setActiveInput.bind(this);    
+    this.setActiveInput = this.setActiveInput.bind(this);
+    this.saveSVG = this.saveSVG.bind(this);    
 
   }
 
@@ -175,6 +184,34 @@ class App extends Component {
     
   }
 
+  saveSVG(){
+
+      console.log('hey');
+      const rawSVG = this.refs.svgOutput;
+      const XMLS = new XMLSerializer();
+      const svgString = XMLS.serializeToString(rawSVG);
+      const blob = new Blob([svgString], { type: 'image/svg+xml' });
+      FileSaver.saveAs(blob, 'facetrace.svg');
+
+  }
+
+  componentDidUpdate() {
+    
+    const img = this.refs.image;
+    const container = ReactDOM.findDOMNode(this.refs.workspaceContainer);
+
+    img.onload = () => {
+        console.log('loaded image dimensions', img.width, img.height);
+        this.setState({
+            width: img.width,
+            height: img.height,
+            containerWidth: (container.clientWidth - 15),
+            containerHeight: (container.clientHeight - 15)
+        });
+    }
+
+  }    
+
   render() {
 
     return (
@@ -197,12 +234,49 @@ class App extends Component {
             </Grid>
 
             <Grid item xs={12} md={8} style={{height: '100%'}}>
-                  <Workspace 
-                    image={this.state.image}
-                    activeLayer={this.state.activeLayer}
-                    highlightLayer={this.state.highlightLayer}
-                    layers={this.state.layers} 
-                  />
+              <Paper align="center" id="workspaceContainer" ref="workspaceContainer">
+                {!this.state.image ? (
+                    <Fragment>
+                        <br/>
+                        <p>Select an Image to continue.</p>
+                        <br/>
+                        <br/>
+                    </Fragment>                        
+                ) : (
+                    <Fragment>
+    
+                        <img ref="image" id="image" alt="user input" style={{ display: 'none'}} src={this.state.image} />
+                        <canvas id="caman" ref="caman" style={{                                        
+                            width: this.state.containerWidth,
+                            height: this.state.containerHeight,
+                            marginTop: '10px',
+                        }} 
+                        />                                                             
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            id="svgOutput" 
+                            ref="svgOutput"
+                            viewBox={'0 0 ' + this.state.width + ' ' + this.state.height}                                    
+                            style={{ 
+                                position: 'relative',
+                                top:  `-${this.state.containerHeight}px`,
+                                width: this.state.containerWidth,
+                                height: this.state.containerHeight,
+                            }} 
+                        >
+                            
+                            <path d={this.state.activeLayer} stroke="#FF0000" strokeWidth="1" fill="none"/>
+                            {this.state.layers.map((layer) => { 
+                                const layerColor = (layer.id === this.state.highlightLayer ? '#00FF00' : '#000000');
+                                return <path key={layer.id} d={layer.path} stroke={layerColor} strokeWidth="1" fill="none"/> 
+                            })}
+                            
+                        </svg>
+        
+                    </Fragment>
+                )}
+                          
+              </Paper>
             </Grid>
 
             <Grid item xs={12} md={2}>
@@ -214,6 +288,7 @@ class App extends Component {
                     highlightLayer={this.highlightLayer}
                     handleNewImage={this.handleNewImage}
                     addLayer={this.addLayer}
+                    saveSVG={this.saveSVG}
                   />
             </Grid>                                        
           
