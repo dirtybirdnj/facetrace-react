@@ -36,7 +36,8 @@ class App extends Component {
       image: null,
       layers: [],
       activeLayer: null,
-      highlightLayer: null
+      highlightLayer: null,
+      showBackground: true
 
     }
 
@@ -52,7 +53,8 @@ class App extends Component {
     this.removeLayer = this.removeLayer.bind(this);
     this.highlightLayer = this.highlightLayer.bind(this);
     this.setActiveInput = this.setActiveInput.bind(this);
-    this.saveSVG = this.saveSVG.bind(this);    
+    this.saveSVG = this.saveSVG.bind(this);
+    this.toggleBackground = this.toggleBackground.bind(this);
 
   }
 
@@ -195,6 +197,12 @@ class App extends Component {
 
   }
 
+  toggleBackground(){
+    this.setState({
+      showBackground: !this.state.showBackground
+    });
+  }
+
   componentDidUpdate() {
     
     const img = this.refs.image;
@@ -224,7 +232,6 @@ class App extends Component {
                   <Settings 
                     values={this.state.settings} 
                     image={this.state.image} 
-                    addLayer={this.addLayer} 
                     updateSetting={this.updateSetting} 
                     renderCaman={this.renderCaman}
                     resetSettings={this.resetSettings}
@@ -262,6 +269,7 @@ class App extends Component {
                                 top:  `-${this.state.containerHeight}px`,
                                 width: this.state.containerWidth,
                                 height: this.state.containerHeight,
+                                background: (this.state.showBackground ? 'none' : 'white')
                             }} 
                         >
                             
@@ -289,6 +297,8 @@ class App extends Component {
                     handleNewImage={this.handleNewImage}
                     addLayer={this.addLayer}
                     saveSVG={this.saveSVG}
+                    toggleBackground={this.toggleBackground}
+                    showBackground={this.state.showBackground}
                   />
             </Grid>                                        
           

@@ -64,17 +64,13 @@ render(props){
                             <Button disabled={isEnabled} onClick={this.props.resetSettings} variant="contained" color="secondary" fullWidth={true}>Reset Settings</Button>
                         </ListItem>
 
-                        <ListItem>
-                            <Button disabled={isEnabled} onClick={addLayer} variant="contained" color="primary" fullWidth={true}>Add Layer</Button>
-                        </ListItem>
-
                     </List>                    
                 </Paper>
                 <br/>
                 <Paper>
                     <List>
                         <ListItem>
-                            <Typography variant="title" color="inherit">Trace Settings</Typography>
+                            <Typography variant="button" color="inherit">Trace Settings</Typography>
                         </ListItem>
 
                         <SliderInput 

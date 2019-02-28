@@ -23,7 +23,7 @@ saveSVG(){
 
 render(){
 
-    const { image, removeLayer, highlightLayer, handleNewImage, saveSVG } = this.props;
+    const { image, removeLayer, highlightLayer, handleNewImage, saveSVG, toggleBackground, showBackground } = this.props;
 
     //Disable the inputs if no image has been uploaded yet
     const isEnabled = (image ? false : true );    
@@ -35,7 +35,7 @@ render(){
                     
                     <List>
                         <ListItem>
-                            <Typography variant="title" color="inherit">Layers</Typography>
+                            <Typography variant="button" color="inherit">Layers</Typography>
                         </ListItem>
                         <Divider variant="middle" />
                         { this.props.layers.map((layer) => {
@@ -79,7 +79,7 @@ render(){
                     
                     <List>
                         <ListItem>
-                            <Typography variant="title" color="inherit">Image</Typography>
+                            <Typography variant="button" color="inherit">Image</Typography>
                         </ListItem>
                                              
                         <Divider variant="middle" />
@@ -91,11 +91,37 @@ render(){
                                 Select an Image
                             </Button>
                             </label>
-                        </ListItem> ) : '' }
-                    
+                        </ListItem> ) 
+                        : 
+                        <Fragment>
+                        <ListItem>
+                        <Typography variant="body2" color="inherit">Background</Typography>
+                        </ListItem>
+
+                        <ListItem>
+                            <Button 
+                                disabled={showBackground}  
+                                style={{marginRight: '10px'}} 
+                                variant="contained" 
+                                color="secondary"
+                                onClick={toggleBackground}>
+                                On
+                            </Button>
+                            <Button 
+                                disabled={!showBackground}    
+                                style={{marginRight: '10px'}} 
+                                variant="contained" 
+                                color="secondary"
+                                onClick={toggleBackground}>
+                                Off
+                            </Button>                            
+                        </ListItem> 
+                        </Fragment>}
+
                         <ListItem>
                             <Button disabled={isEnabled} onClick={saveSVG} variant="contained" color="secondary" fullWidth={true}>Download SVG</Button>
                         </ListItem>
+
                     </List>                    
                 </Paper>                
         
